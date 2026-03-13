@@ -1,0 +1,21 @@
+# WordPress
+wp-config.php
+wp-config-ddev.php
+wp-content/uploads/
+wp-content/upgrade/
+wp-content/backup-db/
+*.log
+
+# DDEV secrets
+.ddev/.env*
+.ddev/homeadditions/
+
+# Astro/Node
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.env.local
+
+# OS
+.DS_Store
+Thumbs.db
