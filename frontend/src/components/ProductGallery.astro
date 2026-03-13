@@ -1,0 +1,132 @@
+---
+interface Props {
+  images: Array<{ src: string; alt: string; name: string }>;
+}
+
+const { images } = Astro.props;
+const mainImage = images[0];
+const galleryImages = images.slice(1);
+---
+<section class="gallery" id="gallery">
+  <div class="container">
+    <div class="gallery__grid">
+      {mainImage && (
+        <div class="gallery__main">
+          <div class="gallery__img-wrap">
+            <img
+              src={mainImage.src}
+              alt={mainImage.alt || mainImage.name}
+              class="gallery__img"
+              loading="eager"
+            />
+            <div class="gallery__shimmer"></div>
+          </div>
+        </div>
+      )}
+
+      {galleryImages.length > 0 && (
+        <div class="gallery__secondary">
+          {galleryImages.map((img, i) => (
+            <div class="gallery__thumb">
+              <div class="gallery__img-wrap">
+                <img
+                  src={img.src}
+                  alt={img.alt || img.name}
+                  class="gallery__img"
+                  loading="lazy"
+                />
+                <div class="gallery__shimmer"></div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+
+  gsap.from('.gallery__main', {
+    x: -60,
+    opacity: 0,
+    duration: 1.1,
+    ease: 'power3.out',
+    scrollTrigger: {
+      trigger: '.gallery',
+      start: 'top 75%',
+    },
+  });
+
+  gsap.from('.gallery__secondary', {
+    x: 60,
+    opacity: 0,
+    duration: 1.1,
+    delay: 0.15,
+    ease: 'power3.out',
+    scrollTrigger: {
+      trigger: '.gallery',
+      start: 'top 75%',
+    },
+  });
+</script>
+
+<style lang="scss">
+  .gallery {
+    padding: 5rem 0;
+    background: var(--gray);
+
+    &__grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      align-items: start;
+
+      @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    &__main,
+    &__thumb {
+      overflow: hidden;
+      will-change: transform;
+    }
+
+    &__img-wrap {
+      overflow: hidden;
+      position: relative;
+      aspect-ratio: 3/4;
+
+      .gallery__main & {
+        aspect-ratio: 4/5;
+      }
+
+      &:hover .gallery__img {
+        transform: scale(1.04);
+      }
+    }
+
+    &__img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.8s var(--ease-luxury);
+    }
+
+    &__shimmer {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        105deg,
+        transparent 40%,
+        rgba(255,255,255,0.06) 50%,
+        transparent 60%
+      );
+      pointer-events: none;
+    }
+  }
+</style>

@@ -1,0 +1,145 @@
+---
+interface Props {
+  imageSrc: string;
+  imageAlt: string;
+}
+
+const { imageSrc, imageAlt } = Astro.props;
+---
+<section class="hero" id="hero">
+  <div class="hero__bg">
+    <img src={imageSrc} alt={imageAlt} class="hero__img" />
+    <div class="hero__overlay"></div>
+  </div>
+
+  <div class="hero__content container">
+    <p class="eyebrow hero__eyebrow">Eesti käsitöö seerum</p>
+    <h1 class="hero__title">
+      Ripsmed<br /><em>& kulmud</em>
+    </h1>
+    <p class="hero__tagline">
+      Pikemad, tugevamad ripsmed.<br />Loomulikult.
+    </p>
+    <a href="#product" class="btn btn--primary hero__cta">
+      Avasta seerum
+    </a>
+  </div>
+
+  <div class="hero__scroll-indicator" aria-hidden="true">
+    <span class="eyebrow">Keri alla</span>
+    <div class="hero__scroll-line"></div>
+  </div>
+</section>
+
+<script>
+  import { gsap } from 'gsap';
+
+  const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+  tl.from('.hero__eyebrow',  { y: 24, opacity: 0, duration: 0.9 }, 0.2)
+    .from('.hero__title',    { y: 48, opacity: 0, duration: 1.1 }, 0.35)
+    .from('.hero__tagline',  { y: 28, opacity: 0, duration: 0.9 }, 0.6)
+    .from('.hero__cta',      { y: 20, opacity: 0, duration: 0.7 }, 0.85)
+    .from('.hero__scroll-indicator', { opacity: 0, duration: 0.6 }, 1.2)
+    .from('.hero__img',      { scale: 1.08, duration: 2.5, ease: 'power1.out' }, 0);
+</script>
+
+<style lang="scss">
+  .hero {
+    position: relative;
+    height: 100svh;
+    min-height: 600px;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+
+    &__bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    &__img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+    }
+
+    &__overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(10, 10, 10, 0.7) 0%,
+        rgba(10, 10, 10, 0.2) 50%,
+        rgba(10, 10, 10, 0.1) 100%
+      );
+    }
+
+    &__content {
+      position: relative;
+      z-index: 2;
+      padding-bottom: 8rem;
+      color: var(--white);
+    }
+
+    &__eyebrow {
+      color: var(--gold-light);
+      margin-bottom: 1rem;
+    }
+
+    &__title {
+      font-family: var(--font-serif);
+      font-size: clamp(3.5rem, 9vw, 7rem);
+      font-weight: 300;
+      line-height: 0.9;
+      letter-spacing: -0.01em;
+      margin-bottom: 1.5rem;
+
+      em {
+        font-style: italic;
+        color: var(--gold-light);
+      }
+    }
+
+    &__tagline {
+      font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+      color: rgba(255,255,255,0.75);
+      font-weight: 300;
+      line-height: 1.7;
+      margin-bottom: 2.5rem;
+      max-width: 22rem;
+    }
+
+    &__scroll-indicator {
+      position: absolute;
+      bottom: 2.5rem;
+      right: 2rem;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+      color: rgba(255,255,255,0.5);
+
+      @media (max-width: 640px) {
+        display: none;
+      }
+    }
+
+    &__scroll-line {
+      width: 1px;
+      height: 3rem;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.5), transparent);
+      animation: scrollLine 1.5s ease-in-out infinite;
+    }
+  }
+
+  @keyframes scrollLine {
+    0% { transform: scaleY(0); transform-origin: top; }
+    50% { transform: scaleY(1); transform-origin: top; }
+    51% { transform: scaleY(1); transform-origin: bottom; }
+    100% { transform: scaleY(0); transform-origin: bottom; }
+  }
+</style>

@@ -1,0 +1,169 @@
+---
+// Header with logo and cart icon
+---
+<header class="site-header" id="site-header">
+  <div class="container">
+    <div class="header-inner">
+      <a href="/" class="logo">
+        <span class="logo__text">Serum Shop</span>
+      </a>
+
+      <nav class="header-nav">
+        <a href="#product" class="header-nav__link">Toode</a>
+        <a href="#ingredients" class="header-nav__link">Koostisosad</a>
+        <a href="#how-to-use" class="header-nav__link">Kasutamine</a>
+      </nav>
+
+      <button class="cart-btn" id="cart-open-btn" aria-label="Ava ostukorv">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 01-8 0"/>
+        </svg>
+        <span class="cart-badge" id="cart-badge" aria-live="polite">0</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  import { cartCount, cartOpen } from '../lib/stores';
+  import { fetchCart } from '../lib/cart';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Sticky header scroll effect
+  const header = document.getElementById('site-header')!;
+  ScrollTrigger.create({
+    start: 'top top',
+    onUpdate: (self) => {
+      if (self.scroll() > 60) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    },
+  });
+
+  // Cart badge count
+  const badge = document.getElementById('cart-badge')!;
+  let prevCount = 0;
+
+  cartCount.subscribe((count) => {
+    badge.textContent = String(count);
+    badge.classList.toggle('has-items', count > 0);
+    if (count > prevCount) {
+      gsap.fromTo(badge, { scale: 1.6 }, { scale: 1, duration: 0.4, ease: 'back.out(2)' });
+    }
+    prevCount = count;
+  });
+
+  // Open cart
+  document.getElementById('cart-open-btn')!.addEventListener('click', () => {
+    cartOpen.set(true);
+  });
+
+  // Load existing cart on mount (in case there's a saved Cart-Token)
+  fetchCart().catch(() => {});
+</script>
+
+<style lang="scss">
+  .site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    transition: background 0.4s var(--ease-luxury), box-shadow 0.4s var(--ease-luxury);
+
+    &.scrolled {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 1px 0 rgba(0,0,0,0.06);
+    }
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 4.5rem;
+    gap: 2rem;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+
+    &__text {
+      font-family: var(--font-serif);
+      font-size: 1.3rem;
+      font-weight: 300;
+      letter-spacing: 0.12em;
+      color: var(--black);
+    }
+  }
+
+  .header-nav {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+
+    @media (max-width: 640px) {
+      display: none;
+    }
+
+    &__link {
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      transition: color 0.2s;
+
+      &:hover {
+        color: var(--black);
+      }
+    }
+  }
+
+  .cart-btn {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    color: var(--black);
+    transition: color 0.2s;
+
+    &:hover {
+      color: var(--gold);
+    }
+  }
+
+  .cart-badge {
+    position: absolute;
+    top: -2px;
+    right: -4px;
+    min-width: 1.1rem;
+    height: 1.1rem;
+    padding: 0 0.2rem;
+    background: var(--gold);
+    color: var(--black);
+    font-size: 0.6rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    opacity: 0;
+    transition: opacity 0.2s;
+
+    &.has-items {
+      opacity: 1;
+    }
+  }
+</style>

@@ -1,21 +1,65 @@
-# WordPress
+# ============================================================
+# WordPress Core (not tracked — installed via DDEV/WP-CLI)
+# ============================================================
+wp-admin/
+wp-includes/
+index.php
+license.txt
+readme.html
+wp-activate.php
+wp-blog-header.php
+wp-comments-post.php
+wp-config-sample.php
+wp-cron.php
+wp-links-opml.php
+wp-load.php
+wp-login.php
+wp-mail.php
+wp-settings.php
+wp-signup.php
+wp-trackback.php
+xmlrpc.php
+
+# WordPress config (contains DB credentials)
 wp-config.php
 wp-config-ddev.php
+
+# WordPress uploads, cache and runtime files
 wp-content/uploads/
 wp-content/upgrade/
 wp-content/backup-db/
+wp-content/cache/
+wp-content/languages/
+
+# WordPress plugins (installed via WP-CLI — not tracked)
+wp-content/plugins/
+
+# WordPress default themes (not used in headless setup)
+wp-content/themes/twentytwenty*/
+wp-content/themes/twentyone*/
+wp-content/themes/twentytwo*/
+wp-content/themes/twentythree*/
+wp-content/themes/twentyfour*/
+wp-content/themes/twentyfive*/
+
 *.log
 
+# ============================================================
 # DDEV secrets
+# ============================================================
 .ddev/.env*
 .ddev/homeadditions/
 
-# Astro/Node
+# ============================================================
+# Astro / Node
+# ============================================================
 frontend/node_modules/
 frontend/dist/
 frontend/.env
 frontend/.env.local
 
+# ============================================================
 # OS
+# ============================================================
 .DS_Store
 Thumbs.db

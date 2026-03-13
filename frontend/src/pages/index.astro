@@ -1,0 +1,120 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import ProductGallery from '../components/ProductGallery.astro';
+import ProductDetails from '../components/ProductDetails.astro';
+import Ingredients from '../components/Ingredients.astro';
+import HowToUse from '../components/HowToUse.astro';
+import Footer from '../components/Footer.astro';
+import CartSidebar from '../components/CartSidebar.astro';
+import { getProducts, type WCProduct } from '../lib/woocommerce';
+
+let products: WCProduct[] = [];
+let error: string | null = null;
+
+try {
+  products = await getProducts();
+} catch (err) {
+  error = err instanceof Error ? err.message : 'Failed to load products';
+  products = [];
+}
+
+const product = products[0] ?? null;
+---
+<Layout
+  title={product ? `${product.name} | Serum Shop` : 'Serum Shop'}
+  description={product?.short_description ?? ''}
+>
+  <Header />
+  <CartSidebar />
+
+  {error && (
+    <div class="error-banner">
+      <p>Viga toodete laadimisel: {error}</p>
+    </div>
+  )}
+
+  {product ? (
+    <>
+      <Hero
+        imageSrc={product.images[0]?.src ?? ''}
+        imageAlt={product.images[0]?.alt || product.name}
+      />
+
+      <div class="product-layout">
+        <ProductGallery images={product.images} />
+        <ProductDetails product={product} />
+      </div>
+
+      <Ingredients />
+      <HowToUse />
+    </>
+  ) : (
+    <div class="no-product">
+      <p>Tooted puuduvad.</p>
+    </div>
+  )}
+
+  <Footer />
+</Layout>
+
+<style is:global lang="scss">
+  .product-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 80vh;
+
+    @media (max-width: 1024px) {
+      grid-template-columns: 1fr;
+    }
+
+    .gallery {
+      padding: 0;
+      background: var(--gray);
+
+      .container {
+        padding: 0;
+        max-width: 100%;
+        height: 100%;
+      }
+
+      &__grid {
+        height: 100%;
+        min-height: 60vh;
+      }
+    }
+
+    .product-details.section {
+      padding: 5rem 4rem;
+      display: flex;
+      align-items: center;
+
+      @media (max-width: 1280px) {
+        padding: 4rem 2.5rem;
+      }
+
+      @media (max-width: 1024px) {
+        padding: 4rem 2rem;
+      }
+    }
+  }
+
+  .error-banner {
+    background: #fef2f2;
+    border-bottom: 1px solid #fecaca;
+    padding: 1rem 2rem;
+    text-align: center;
+    font-size: 0.875rem;
+    color: #991b1b;
+  }
+
+  .no-product {
+    min-height: 50vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+    font-style: italic;
+  }
+</style>

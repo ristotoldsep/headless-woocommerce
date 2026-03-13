@@ -1,0 +1,209 @@
+---
+const steps = [
+  {
+    number: '01',
+    title: 'Puhasta',
+    description: 'Puhasta ripsmed ja kulmud hoolikalt meigist ja mustusest. Nahk peab olema kuiv enne kandmist.',
+  },
+  {
+    number: '02',
+    title: 'Kanna',
+    description: 'Kanna väike kogus seruumi õhukese pintslitükiga ripsme- ja kulmujuurele. Piisab ühest triibust.',
+  },
+  {
+    number: '03',
+    title: 'Lase imenduda',
+    description: 'Lase serum imenduda üleöö. Ärge loputage. Kasutage iga õhtu regulaarsuse tagamiseks.',
+  },
+];
+---
+<section class="how-to-use section" id="how-to-use">
+  <div class="container">
+    <div class="how-to-use__header">
+      <p class="eyebrow">Kasutamisjuhend</p>
+      <div class="divider"></div>
+      <h2 class="text-heading">Kuidas kasutada?</h2>
+    </div>
+
+    <div class="steps">
+      <div class="steps__line" aria-hidden="true"></div>
+      {steps.map((step, i) => (
+        <div class="step" data-step={i}>
+          <div class="step__number-wrap">
+            <span class="step__number">{step.number}</span>
+          </div>
+          <div class="step__content">
+            <h3 class="step__title">{step.title}</h3>
+            <p class="step__desc">{step.description}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <div class="how-to-use__note">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="12" y1="8" x2="12" y2="12"/>
+        <line x1="12" y1="16" x2="12.01" y2="16"/>
+      </svg>
+      <p>Optimaalsete tulemuste saavutamiseks kasutage vähemalt 8 järjestikusel nädalal</p>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+  gsap.registerPlugin(ScrollTrigger);
+
+  gsap.from('.how-to-use__header > *', {
+    y: 30,
+    opacity: 0,
+    stagger: 0.1,
+    duration: 0.8,
+    ease: 'power2.out',
+    scrollTrigger: {
+      trigger: '.how-to-use__header',
+      start: 'top 80%',
+    },
+  });
+
+  gsap.from('.step', {
+    x: -40,
+    opacity: 0,
+    stagger: 0.18,
+    duration: 0.9,
+    ease: 'power3.out',
+    scrollTrigger: {
+      trigger: '.steps',
+      start: 'top 75%',
+    },
+  });
+
+  gsap.from('.steps__line', {
+    scaleY: 0,
+    transformOrigin: 'top center',
+    duration: 1.2,
+    ease: 'power2.out',
+    scrollTrigger: {
+      trigger: '.steps',
+      start: 'top 75%',
+    },
+  });
+
+  gsap.from('.how-to-use__note', {
+    y: 20,
+    opacity: 0,
+    duration: 0.7,
+    scrollTrigger: {
+      trigger: '.how-to-use__note',
+      start: 'top 85%',
+    },
+  });
+</script>
+
+<style lang="scss">
+  .how-to-use {
+    background: var(--gray);
+
+    &__header {
+      max-width: 480px;
+      margin-bottom: 4rem;
+    }
+
+    &__note {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      margin-top: 3rem;
+      padding: 1.25rem 1.5rem;
+      background: rgba(201, 169, 110, 0.1);
+      border-left: 2px solid var(--gold);
+      max-width: 560px;
+
+      svg {
+        color: var(--gold);
+        flex-shrink: 0;
+        margin-top: 0.1rem;
+      }
+
+      p {
+        font-size: 0.8rem;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+    }
+  }
+
+  .steps {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    max-width: 640px;
+
+    &__line {
+      position: absolute;
+      left: 1.75rem;
+      top: 2.5rem;
+      bottom: 2.5rem;
+      width: 1px;
+      background: var(--gray-dark);
+      z-index: 0;
+
+      @media (max-width: 640px) {
+        display: none;
+      }
+    }
+  }
+
+  .step {
+    display: flex;
+    align-items: flex-start;
+    gap: 2rem;
+    padding: 2rem 0;
+    position: relative;
+    z-index: 1;
+
+    &:not(:last-child) {
+      border-bottom: 1px solid var(--gray-dark);
+    }
+
+    &__number-wrap {
+      flex-shrink: 0;
+      width: 3.5rem;
+      height: 3.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--white);
+      border: 1px solid var(--gray-dark);
+    }
+
+    &__number {
+      font-family: var(--font-serif);
+      font-size: 1rem;
+      font-weight: 300;
+      color: var(--gold);
+      letter-spacing: 0.05em;
+    }
+
+    &__content {
+      flex: 1;
+      padding-top: 0.5rem;
+    }
+
+    &__title {
+      font-family: var(--font-serif);
+      font-size: 1.4rem;
+      font-weight: 300;
+      margin-bottom: 0.5rem;
+    }
+
+    &__desc {
+      font-size: 0.875rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+  }
+</style>
