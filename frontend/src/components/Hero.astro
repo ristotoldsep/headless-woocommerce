@@ -7,28 +7,39 @@ interface Props {
 const { imageSrc, imageAlt } = Astro.props;
 ---
 <section class="hero" id="hero">
-  <div class="hero__bg">
+
+  <div class="hero__text-col">
+    <div class="hero__text-inner">
+      <p class="hero__vertical-eyebrow" aria-hidden="true">Eesti käsitöö seerum</p>
+
+      <div class="hero__copy">
+        <p class="eyebrow hero__eyebrow">Eesti käsitöö seerum</p>
+        <h1 class="hero__title">
+          Ripsmed<br /><em>&amp; kulmud</em>
+        </h1>
+        <p class="hero__tagline">
+          Pikemad, tugevamad ripsmed.<br />Loomulikult.
+        </p>
+        <a href="#product" class="hero__cta">
+          Avasta seerum
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </a>
+      </div>
+
+      <div class="hero__scroll-indicator" aria-hidden="true">
+        <span class="eyebrow">Keri alla</span>
+        <div class="hero__scroll-line"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero__img-col">
     <img src={imageSrc} alt={imageAlt} class="hero__img" />
-    <div class="hero__overlay"></div>
   </div>
 
-  <div class="hero__content container">
-    <p class="eyebrow hero__eyebrow">Eesti käsitöö seerum</p>
-    <h1 class="hero__title">
-      Ripsmed<br /><em>& kulmud</em>
-    </h1>
-    <p class="hero__tagline">
-      Pikemad, tugevamad ripsmed.<br />Loomulikult.
-    </p>
-    <a href="#product" class="btn btn--primary hero__cta">
-      Avasta seerum
-    </a>
-  </div>
-
-  <div class="hero__scroll-indicator" aria-hidden="true">
-    <span class="eyebrow">Keri alla</span>
-    <div class="hero__scroll-line"></div>
-  </div>
 </section>
 
 <script>
@@ -36,110 +47,218 @@ const { imageSrc, imageAlt } = Astro.props;
 
   const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
-  tl.from('.hero__eyebrow',  { y: 24, opacity: 0, duration: 0.9 }, 0.2)
-    .from('.hero__title',    { y: 48, opacity: 0, duration: 1.1 }, 0.35)
-    .from('.hero__tagline',  { y: 28, opacity: 0, duration: 0.9 }, 0.6)
-    .from('.hero__cta',      { y: 20, opacity: 0, duration: 0.7 }, 0.85)
-    .from('.hero__scroll-indicator', { opacity: 0, duration: 0.6 }, 1.2)
-    .from('.hero__img',      { scale: 1.08, duration: 2.5, ease: 'power1.out' }, 0);
+  tl.from('.hero__eyebrow',        { y: 20, opacity: 0, duration: 0.8 }, 0.2)
+    .from('.hero__title',          { y: 40, opacity: 0, duration: 1.0 }, 0.38)
+    .from('.hero__tagline',        { y: 24, opacity: 0, duration: 0.8 }, 0.62)
+    .from('.hero__cta',            { y: 16, opacity: 0, duration: 0.7 }, 0.82)
+    .from('.hero__scroll-indicator', { opacity: 0, duration: 0.6 }, 1.1)
+    .from('.hero__img',            { scale: 1.06, duration: 2.2, ease: 'power1.out' }, 0)
+    .from('.hero__vertical-eyebrow', { opacity: 0, duration: 0.8 }, 0.5);
 </script>
 
 <style lang="scss">
   .hero {
-    position: relative;
-    height: 100svh;
-    min-height: 600px;
-    display: flex;
-    align-items: flex-end;
+    display: grid;
+    grid-template-columns: 55fr 45fr;
+    min-height: 100svh;
     overflow: hidden;
 
-    &__bg {
-      position: absolute;
-      inset: 0;
-      z-index: 0;
-    }
-
-    &__img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center top;
-    }
-
-    &__overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        to top,
-        rgba(10, 10, 10, 0.7) 0%,
-        rgba(10, 10, 10, 0.2) 50%,
-        rgba(10, 10, 10, 0.1) 100%
-      );
-    }
-
-    &__content {
-      position: relative;
-      z-index: 2;
-      padding-bottom: 8rem;
-      color: var(--white);
-    }
-
-    &__eyebrow {
-      color: var(--gold-light);
-      margin-bottom: 1rem;
-    }
-
-    &__title {
-      font-family: var(--font-serif);
-      font-size: clamp(3.5rem, 9vw, 7rem);
-      font-weight: 300;
-      line-height: 0.9;
-      letter-spacing: -0.01em;
-      margin-bottom: 1.5rem;
-
-      em {
-        font-style: italic;
-        color: var(--gold-light);
-      }
-    }
-
-    &__tagline {
-      font-size: clamp(0.95rem, 1.5vw, 1.1rem);
-      color: rgba(255,255,255,0.75);
-      font-weight: 300;
-      line-height: 1.7;
-      margin-bottom: 2.5rem;
-      max-width: 22rem;
-    }
-
-    &__scroll-indicator {
-      position: absolute;
-      bottom: 2.5rem;
-      right: 2rem;
-      z-index: 2;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.75rem;
-      color: rgba(255,255,255,0.5);
-
-      @media (max-width: 640px) {
-        display: none;
-      }
-    }
-
-    &__scroll-line {
-      width: 1px;
-      height: 3rem;
-      background: linear-gradient(to bottom, rgba(255,255,255,0.5), transparent);
-      animation: scrollLine 1.5s ease-in-out infinite;
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+      grid-template-rows: 50svh auto;
+      min-height: unset;
     }
   }
 
+  // ── Text column ──────────────────────────────────────────────────────────────
+
+  .hero__text-col {
+    position: relative;
+    background: var(--white);
+    display: flex;
+    align-items: stretch;
+
+    // Gold vertical rule on the right edge
+    &::after {
+      content: '';
+      position: absolute;
+      top: 15%;
+      bottom: 15%;
+      right: 0;
+      width: 1px;
+      background: var(--gold);
+      opacity: 0.4;
+    }
+
+    @media (max-width: 768px) {
+      order: 2;
+
+      &::after { display: none; }
+    }
+  }
+
+  .hero__text-inner {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 4rem 3rem 3rem 4rem;
+    width: 100%;
+    position: relative;
+
+    @media (max-width: 1024px) {
+      padding: 3rem 2.5rem 2.5rem 3rem;
+    }
+
+    @media (max-width: 768px) {
+      padding: 2.5rem 1.5rem 3rem;
+      justify-content: flex-start;
+      gap: 2rem;
+    }
+  }
+
+  // Rotated eyebrow along left edge
+  .hero__vertical-eyebrow {
+    position: absolute;
+    left: 1.25rem;
+    top: 50%;
+    transform: translateY(-50%) rotate(-90deg);
+    transform-origin: center center;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    white-space: nowrap;
+
+    @media (max-width: 768px) {
+      display: none;
+    }
+  }
+
+  .hero__copy {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex: 1;
+    padding-top: 2rem;
+  }
+
+  .hero__eyebrow {
+    color: var(--gold);
+    margin-bottom: 1.25rem;
+
+    @media (max-width: 768px) {
+      margin-bottom: 0.75rem;
+    }
+  }
+
+  .hero__title {
+    font-family: var(--font-serif);
+    font-size: clamp(3.5rem, 6.5vw, 6rem);
+    font-weight: 300;
+    line-height: 0.92;
+    letter-spacing: -0.01em;
+    color: var(--black);
+    margin-bottom: 1.75rem;
+
+    em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    @media (max-width: 768px) {
+      font-size: clamp(3rem, 10vw, 4.5rem);
+      margin-bottom: 1.25rem;
+    }
+  }
+
+  .hero__tagline {
+    font-size: clamp(0.875rem, 1.2vw, 1rem);
+    color: var(--muted);
+    font-weight: 300;
+    line-height: 1.75;
+    margin-bottom: 2.5rem;
+    max-width: 22rem;
+
+    @media (max-width: 768px) {
+      margin-bottom: 2rem;
+    }
+  }
+
+  .hero__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--black);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-color: var(--gold);
+    transition: color 0.2s, gap 0.2s;
+    width: fit-content;
+
+    svg {
+      transition: transform 0.2s;
+      color: var(--gold);
+    }
+
+    &:hover {
+      color: var(--gold);
+      gap: 1rem;
+
+      svg { transform: translateX(3px); }
+    }
+  }
+
+  // ── Scroll indicator ─────────────────────────────────────────────────────────
+
+  .hero__scroll-indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--muted);
+    align-self: flex-end;
+
+    @media (max-width: 768px) {
+      display: none;
+    }
+  }
+
+  .hero__scroll-line {
+    width: 1px;
+    height: 3rem;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: scrollLine 1.5s ease-in-out infinite;
+  }
+
+  // ── Image column ─────────────────────────────────────────────────────────────
+
+  .hero__img-col {
+    position: relative;
+    overflow: hidden;
+
+    @media (max-width: 768px) {
+      order: 1;
+      height: 50svh;
+    }
+  }
+
+  .hero__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+  }
+
+  // ── Animation ────────────────────────────────────────────────────────────────
+
   @keyframes scrollLine {
-    0% { transform: scaleY(0); transform-origin: top; }
-    50% { transform: scaleY(1); transform-origin: top; }
-    51% { transform: scaleY(1); transform-origin: bottom; }
+    0%   { transform: scaleY(0); transform-origin: top; }
+    50%  { transform: scaleY(1); transform-origin: top; }
+    51%  { transform: scaleY(1); transform-origin: bottom; }
     100% { transform: scaleY(0); transform-origin: bottom; }
   }
 </style>

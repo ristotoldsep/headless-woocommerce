@@ -3,6 +3,43 @@ import type { CartItem } from './stores';
 
 const WC = import.meta.env.PUBLIC_WC_URL;
 
+// ─── Types ───────────────────────────────────────────────────────────────────
+
+export interface Address {
+  first_name: string;
+  last_name: string;
+  address_1: string;
+  address_2?: string;
+  city: string;
+  postcode: string;
+  country: string;
+  phone: string;
+  email: string;
+}
+
+export interface CheckoutData {
+  billing_address: Address;
+  shipping_address?: Partial<Address>;
+  payment_method: 'bacs' | 'cod';
+  customer_note?: string;
+}
+
+export interface OrderResult {
+  order_id: number;
+  order_number: string;
+  order_key: string;
+  status: string;
+  payment_result: {
+    payment_status: string;
+    redirect_url: string | null;
+    payment_details: Array<{ key: string; value: string }>;
+  };
+  billing_address: Address;
+  totals: { total_price: string };
+}
+
+// ─── Core request helper ──────────────────────────────────────────────────────
+
 async function storeApiRequest(path: string, options: RequestInit = {}): Promise<any> {
   const token = cartToken.get();
   const headers: Record<string, string> = {
@@ -27,6 +64,8 @@ async function storeApiRequest(path: string, options: RequestInit = {}): Promise
   return res.json();
 }
 
+// ─── Cart state sync ──────────────────────────────────────────────────────────
+
 function syncCartState(data: any) {
   const items: CartItem[] = (data.items ?? []).map((item: any) => ({
     key: item.key,
@@ -41,6 +80,8 @@ function syncCartState(data: any) {
   cartTotal.set(data.totals?.total_price ?? '0');
   cartCount.set(items.reduce((sum, item) => sum + item.quantity, 0));
 }
+
+// ─── Cart operations ──────────────────────────────────────────────────────────
 
 export async function fetchCart(): Promise<void> {
   const data = await storeApiRequest('/cart');
@@ -76,8 +117,19 @@ export async function removeCartItem(key: string): Promise<void> {
   syncCartState(data);
 }
 
-export function getCheckoutUrl(): string {
-  const token = cartToken.get();
-  const base = `${WC}/checkout/`;
-  return token ? `${base}?cart_token=${token}` : base;
+// ─── Checkout ────────────────────────────────────────────────────────────────
+
+export async function placeOrder(data: CheckoutData): Promise<OrderResult> {
+  const result = await storeApiRequest('/checkout', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
+
+  // Clear cart after successful order
+  cartItems.set([]);
+  cartTotal.set('0');
+  cartCount.set(0);
+  cartToken.set('');
+
+  return result as OrderResult;
 }

@@ -5,128 +5,145 @@ interface Props {
 
 const { images } = Astro.props;
 const mainImage = images[0];
-const galleryImages = images.slice(1);
+const secondImage = images[1];
 ---
-<section class="gallery" id="gallery">
-  <div class="container">
-    <div class="gallery__grid">
-      {mainImage && (
-        <div class="gallery__main">
-          <div class="gallery__img-wrap">
-            <img
-              src={mainImage.src}
-              alt={mainImage.alt || mainImage.name}
-              class="gallery__img"
-              loading="eager"
-            />
-            <div class="gallery__shimmer"></div>
-          </div>
+<div class="gallery" id="gallery">
+  <div class="gallery__stack">
+    {mainImage && (
+      <div class="gallery__main">
+        <div class="gallery__img-wrap gallery__img-wrap--main">
+          <img
+            src={mainImage.src}
+            alt={mainImage.alt || mainImage.name}
+            class="gallery__img"
+            loading="eager"
+          />
         </div>
-      )}
+      </div>
+    )}
 
-      {galleryImages.length > 0 && (
-        <div class="gallery__secondary">
-          {galleryImages.map((img, i) => (
-            <div class="gallery__thumb">
-              <div class="gallery__img-wrap">
-                <img
-                  src={img.src}
-                  alt={img.alt || img.name}
-                  class="gallery__img"
-                  loading="lazy"
-                />
-                <div class="gallery__shimmer"></div>
-              </div>
-            </div>
-          ))}
+    {secondImage && (
+      <div class="gallery__secondary">
+        <div class="gallery__img-wrap gallery__img-wrap--secondary">
+          <img
+            src={secondImage.src}
+            alt={secondImage.alt || secondImage.name}
+            class="gallery__img"
+            loading="lazy"
+          />
         </div>
-      )}
-    </div>
+      </div>
+    )}
   </div>
-</section>
+</div>
 
 <script>
   import { gsap } from 'gsap';
   import { ScrollTrigger } from 'gsap/ScrollTrigger';
   gsap.registerPlugin(ScrollTrigger);
 
+  const st = { trigger: '.gallery', start: 'top 80%' };
+
   gsap.from('.gallery__main', {
-    x: -60,
-    opacity: 0,
-    duration: 1.1,
-    ease: 'power3.out',
-    scrollTrigger: {
-      trigger: '.gallery',
-      start: 'top 75%',
-    },
+    y: 40, opacity: 0, duration: 1.1, ease: 'power3.out',
+    scrollTrigger: st,
   });
 
   gsap.from('.gallery__secondary', {
-    x: 60,
-    opacity: 0,
-    duration: 1.1,
-    delay: 0.15,
-    ease: 'power3.out',
-    scrollTrigger: {
-      trigger: '.gallery',
-      start: 'top 75%',
-    },
+    y: 60, opacity: 0, duration: 1.1, delay: 0.18, ease: 'power3.out',
+    scrollTrigger: st,
   });
 </script>
 
 <style lang="scss">
   .gallery {
-    padding: 5rem 0;
     background: var(--gray);
+    height: 100%;
+    min-height: 70vh;
+    display: flex;
+    align-items: stretch;
+  }
 
-    &__grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.25rem;
-      align-items: start;
+  .gallery__stack {
+    position: relative;
+    width: 100%;
+    padding: 3rem 2.5rem 3rem 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0;
 
-      @media (max-width: 768px) {
-        grid-template-columns: 1fr;
-      }
+    @media (max-width: 1024px) {
+      padding: 3rem 2rem;
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 1rem;
     }
 
-    &__main,
-    &__thumb {
-      overflow: hidden;
-      will-change: transform;
+    @media (max-width: 768px) {
+      flex-direction: column;
+      padding: 2rem 1.5rem;
+      gap: 1rem;
+    }
+  }
+
+  .gallery__main {
+    position: relative;
+    z-index: 2;
+    width: 80%;
+    align-self: flex-start;
+
+    @media (max-width: 1024px) {
+      width: 55%;
     }
 
-    &__img-wrap {
-      overflow: hidden;
-      position: relative;
-      aspect-ratio: 3/4;
-
-      .gallery__main & {
-        aspect-ratio: 4/5;
-      }
-
-      &:hover .gallery__img {
-        transform: scale(1.04);
-      }
-    }
-
-    &__img {
+    @media (max-width: 768px) {
       width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.8s var(--ease-luxury);
+    }
+  }
+
+  .gallery__secondary {
+    position: relative;
+    z-index: 1;
+    width: 65%;
+    align-self: flex-end;
+    margin-top: -3rem;
+
+    @media (max-width: 1024px) {
+      width: 45%;
+      margin-top: 2rem;
+      align-self: flex-start;
     }
 
-    &__shimmer {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        105deg,
-        transparent 40%,
-        rgba(255,255,255,0.06) 50%,
-        transparent 60%
-      );
-      pointer-events: none;
+    @media (max-width: 768px) {
+      width: 75%;
+      margin-top: 0;
+      align-self: flex-end;
     }
+  }
+
+  .gallery__img-wrap {
+    overflow: hidden;
+    position: relative;
+
+    &--main {
+      aspect-ratio: 4/5;
+    }
+
+    &--secondary {
+      aspect-ratio: 3/2;
+    }
+
+    &:hover .gallery__img {
+      transform: scale(1.04);
+    }
+  }
+
+  .gallery__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.9s var(--ease-luxury);
   }
 </style>

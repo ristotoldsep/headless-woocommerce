@@ -1,0 +1,136 @@
+---
+---
+<section class="testimonials" id="testimonials">
+  <div class="testimonials__inner">
+    <p class="eyebrow testimonials__eyebrow">Klientide kogemused</p>
+
+    <div class="testimonials__grid">
+
+      <figure class="testimonial">
+        <blockquote class="testimonial__quote">
+          <span class="testimonial__guillemet" aria-hidden="true">„</span>
+          Kasutasin 6 nädalat ja tulemused olid vapustavad. Ripsmed muutusid märgatavalt pikemaks ja tihedamaks — esimest korda elus ei pea ma ripsmete maskara järele haarama.
+        </blockquote>
+        <figcaption class="testimonial__author">
+          <span class="testimonial__name">Kristiina M.</span>
+          <span class="testimonial__stars" aria-label="5 tähte">★★★★★</span>
+        </figcaption>
+      </figure>
+
+      <figure class="testimonial">
+        <blockquote class="testimonial__quote">
+          <span class="testimonial__guillemet" aria-hidden="true">„</span>
+          Olin skeptiline, aga pärast 4 nädalat on erinevus päriselt näha. Kulmud on täidlasemad ja ripsmejuur tugevam. Kindlasti ostan uuesti.
+        </blockquote>
+        <figcaption class="testimonial__author">
+          <span class="testimonial__name">Liis T.</span>
+          <span class="testimonial__stars" aria-label="5 tähte">★★★★★</span>
+        </figcaption>
+      </figure>
+
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  gsap.from('.testimonial', {
+    y: 28,
+    opacity: 0,
+    duration: 0.9,
+    stagger: 0.2,
+    ease: 'power3.out',
+    scrollTrigger: {
+      trigger: '.testimonials',
+      start: 'top 75%',
+    },
+  });
+</script>
+
+<style lang="scss">
+  .testimonials {
+    padding: 5rem 2rem;
+  }
+
+  .testimonials__inner {
+    max-width: 900px;
+    margin: 0 auto 0 8%;
+    background: var(--gray);
+    padding: 4rem;
+
+    @media (max-width: 1200px) {
+      margin: 0 auto;
+    }
+
+    @media (max-width: 640px) {
+      padding: 2.5rem 1.75rem;
+    }
+  }
+
+  .testimonials__eyebrow {
+    color: var(--gold);
+    margin-bottom: 2.5rem;
+  }
+
+  .testimonials__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+
+    @media (max-width: 640px) {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+  }
+
+  .testimonial {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+
+    &__quote {
+      font-family: var(--font-serif);
+      font-size: clamp(1.05rem, 1.5vw, 1.2rem);
+      font-style: italic;
+      font-weight: 300;
+      line-height: 1.65;
+      color: var(--black);
+      position: relative;
+    }
+
+    &__guillemet {
+      font-family: var(--font-serif);
+      font-size: 3.5rem;
+      line-height: 0.5;
+      color: var(--gold);
+      opacity: 0.5;
+      display: inline-block;
+      vertical-align: -0.5rem;
+      margin-right: 0.15rem;
+    }
+
+    &__author {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    &__name {
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    &__stars {
+      color: var(--gold);
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+    }
+  }
+</style>

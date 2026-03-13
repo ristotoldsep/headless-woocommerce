@@ -17,37 +17,39 @@ const steps = [
   },
 ];
 ---
-<section class="how-to-use section" id="how-to-use">
-  <div class="container">
+<section class="how-to-use" id="how-to-use">
+  <div class="how-to-use__inner">
+
     <div class="how-to-use__header">
-      <p class="eyebrow">Kasutamisjuhend</p>
-      <div class="divider"></div>
-      <h2 class="text-heading">Kuidas kasutada?</h2>
+      <p class="eyebrow how-to-use__eyebrow">Kasutamisjuhend</p>
+      <h2 class="how-to-use__title">Kuidas kasutada?</h2>
     </div>
 
     <div class="steps">
-      <div class="steps__line" aria-hidden="true"></div>
-      {steps.map((step, i) => (
-        <div class="step" data-step={i}>
-          <div class="step__number-wrap">
-            <span class="step__number">{step.number}</span>
-          </div>
+      {steps.map((step) => (
+        <div class="step">
+          <span class="step__ghost" aria-hidden="true">{step.number}</span>
           <div class="step__content">
+            <span class="step__label">{step.number}</span>
             <h3 class="step__title">{step.title}</h3>
             <p class="step__desc">{step.description}</p>
+          </div>
+          <div class="step__dots" aria-hidden="true">
+            <span></span><span></span><span></span>
           </div>
         </div>
       ))}
     </div>
 
     <div class="how-to-use__note">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
         <circle cx="12" cy="12" r="10"/>
         <line x1="12" y1="8" x2="12" y2="12"/>
         <line x1="12" y1="16" x2="12.01" y2="16"/>
       </svg>
       <p>Optimaalsete tulemuste saavutamiseks kasutage vähemalt 8 järjestikusel nädalal</p>
     </div>
+
   </div>
 </section>
 
@@ -57,153 +59,157 @@ const steps = [
   gsap.registerPlugin(ScrollTrigger);
 
   gsap.from('.how-to-use__header > *', {
-    y: 30,
-    opacity: 0,
-    stagger: 0.1,
-    duration: 0.8,
-    ease: 'power2.out',
-    scrollTrigger: {
-      trigger: '.how-to-use__header',
-      start: 'top 80%',
-    },
+    y: 24, opacity: 0, stagger: 0.1, duration: 0.8, ease: 'power2.out',
+    scrollTrigger: { trigger: '.how-to-use__header', start: 'top 80%' },
   });
 
   gsap.from('.step', {
-    x: -40,
-    opacity: 0,
-    stagger: 0.18,
-    duration: 0.9,
-    ease: 'power3.out',
-    scrollTrigger: {
-      trigger: '.steps',
-      start: 'top 75%',
-    },
-  });
-
-  gsap.from('.steps__line', {
-    scaleY: 0,
-    transformOrigin: 'top center',
-    duration: 1.2,
-    ease: 'power2.out',
-    scrollTrigger: {
-      trigger: '.steps',
-      start: 'top 75%',
-    },
+    y: 32, opacity: 0, stagger: 0.15, duration: 0.9, ease: 'power3.out',
+    scrollTrigger: { trigger: '.steps', start: 'top 75%' },
   });
 
   gsap.from('.how-to-use__note', {
-    y: 20,
-    opacity: 0,
-    duration: 0.7,
-    scrollTrigger: {
-      trigger: '.how-to-use__note',
-      start: 'top 85%',
-    },
+    y: 20, opacity: 0, duration: 0.7,
+    scrollTrigger: { trigger: '.how-to-use__note', start: 'top 88%' },
   });
 </script>
 
 <style lang="scss">
   .how-to-use {
-    background: var(--gray);
+    background: var(--white);
+    padding: 6rem 2rem;
+  }
 
-    &__header {
-      max-width: 480px;
-      margin-bottom: 4rem;
+  .how-to-use__inner {
+    max-width: 700px;
+    margin-left: 15%;
+
+    @media (max-width: 1200px) {
+      margin-left: 8%;
     }
 
-    &__note {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.75rem;
-      margin-top: 3rem;
-      padding: 1.25rem 1.5rem;
-      background: rgba(201, 169, 110, 0.1);
-      border-left: 2px solid var(--gold);
-      max-width: 560px;
-
-      svg {
-        color: var(--gold);
-        flex-shrink: 0;
-        margin-top: 0.1rem;
-      }
-
-      p {
-        font-size: 0.8rem;
-        color: var(--muted);
-        line-height: 1.7;
-      }
+    @media (max-width: 768px) {
+      margin-left: 0;
+      margin: 0 auto;
     }
   }
 
+  .how-to-use__header {
+    margin-bottom: 4rem;
+  }
+
+  .how-to-use__eyebrow {
+    color: var(--gold);
+    margin-bottom: 0.75rem;
+  }
+
+  .how-to-use__title {
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 300;
+    line-height: 1.1;
+    color: var(--black);
+  }
+
+  .how-to-use__note {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-top: 3rem;
+    padding: 1.25rem 1.5rem;
+    background: rgba(201, 169, 110, 0.07);
+    border-left: 2px solid var(--gold);
+
+    svg {
+      color: var(--gold);
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+
+    p {
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+  }
+
+  // ── Steps ────────────────────────────────────────────────────────────────────
+
   .steps {
-    position: relative;
     display: flex;
     flex-direction: column;
     gap: 0;
-    max-width: 640px;
-
-    &__line {
-      position: absolute;
-      left: 1.75rem;
-      top: 2.5rem;
-      bottom: 2.5rem;
-      width: 1px;
-      background: var(--gray-dark);
-      z-index: 0;
-
-      @media (max-width: 640px) {
-        display: none;
-      }
-    }
   }
 
   .step {
     display: flex;
     align-items: flex-start;
     gap: 2rem;
-    padding: 2rem 0;
+    padding: 2.5rem 0;
     position: relative;
-    z-index: 1;
 
     &:not(:last-child) {
       border-bottom: 1px solid var(--gray-dark);
     }
 
-    &__number-wrap {
-      flex-shrink: 0;
-      width: 3.5rem;
-      height: 3.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--white);
-      border: 1px solid var(--gray-dark);
-    }
-
-    &__number {
+    // Large ghost number, layered behind content
+    &__ghost {
+      position: absolute;
+      left: -0.5rem;
+      top: 50%;
+      transform: translateY(-50%);
       font-family: var(--font-serif);
-      font-size: 1rem;
+      font-size: 6rem;
       font-weight: 300;
-      color: var(--gold);
-      letter-spacing: 0.05em;
+      line-height: 1;
+      color: var(--black);
+      opacity: 0.05;
+      pointer-events: none;
+      user-select: none;
+      letter-spacing: -0.02em;
+
+      @media (max-width: 640px) {
+        font-size: 4rem;
+      }
     }
 
     &__content {
       flex: 1;
-      padding-top: 0.5rem;
+      position: relative;
+      z-index: 1;
+      padding-left: 3.5rem;
+
+      @media (max-width: 640px) {
+        padding-left: 2.5rem;
+      }
+    }
+
+    &__label {
+      display: block;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
     }
 
     &__title {
       font-family: var(--font-serif);
-      font-size: 1.4rem;
+      font-size: 1.5rem;
       font-weight: 300;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.6rem;
+      color: var(--black);
     }
 
     &__desc {
       font-size: 0.875rem;
       color: var(--muted);
-      line-height: 1.7;
+      line-height: 1.75;
+    }
+
+    // Dot separator between steps
+    &__dots {
+      display: none;
     }
   }
 </style>

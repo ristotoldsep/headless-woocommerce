@@ -1,0 +1,107 @@
+---
+---
+<section class="results-strip" id="results">
+  <div class="results-strip__inner">
+    <div class="results-metric">
+      <span class="results-metric__number">400%</span>
+      <span class="results-metric__label">niisutuse tõus</span>
+    </div>
+    <div class="results-divider" aria-hidden="true"></div>
+    <div class="results-metric">
+      <span class="results-metric__number">4</span>
+      <span class="results-metric__label">nädalat — esimesed<br />tulemused</span>
+    </div>
+    <div class="results-divider" aria-hidden="true"></div>
+    <div class="results-metric">
+      <span class="results-metric__number">0</span>
+      <span class="results-metric__label">julmaid<br />katseid</span>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  gsap.from('.results-metric', {
+    y: 30,
+    opacity: 0,
+    duration: 0.8,
+    stagger: 0.15,
+    ease: 'power3.out',
+    scrollTrigger: {
+      trigger: '.results-strip',
+      start: 'top 80%',
+    },
+  });
+</script>
+
+<style lang="scss">
+  .results-strip {
+    padding: 5rem 2rem;
+  }
+
+  .results-strip__inner {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0;
+  }
+
+  .results-metric {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 0 2rem;
+
+    &__number {
+      font-family: var(--font-serif);
+      font-size: clamp(3.5rem, 7vw, 5.5rem);
+      font-weight: 300;
+      line-height: 1;
+      color: var(--black);
+      display: block;
+      margin-bottom: 0.75rem;
+    }
+
+    &__label {
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+  }
+
+  .results-divider {
+    width: 1px;
+    height: 3.5rem;
+    background: var(--gray-dark);
+    flex-shrink: 0;
+    align-self: center;
+    margin-top: -1rem;
+  }
+
+  @media (max-width: 640px) {
+    .results-strip__inner {
+      flex-direction: column;
+      align-items: center;
+      gap: 2.5rem;
+    }
+
+    .results-divider {
+      width: 3rem;
+      height: 1px;
+    }
+
+    .results-metric {
+      padding: 0;
+    }
+  }
+</style>

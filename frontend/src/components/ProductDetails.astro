@@ -17,72 +17,72 @@ const isOnSale = product.sale_price && product.sale_price !== product.regular_pr
 const regularPriceFormatted = parseFloat(product.regular_price).toFixed(2).replace('.', ',');
 const inStock = product.stock_status === 'instock';
 ---
-<section class="product-details section" id="product">
-  <div class="container">
-    <div class="product-details__inner">
-      <div class="product-details__content">
-        <p class="eyebrow">Multi-peptiid seerum</p>
-        <div class="divider"></div>
-        <h2 class="product-details__name">{product.name}</h2>
+<section class="product-details" id="product">
+  <div class="product-details__inner">
+    <div class="product-details__content">
 
-        <div class="product-details__price-row">
-          <span class="product-details__price">{price}&nbsp;€</span>
-          {isOnSale && (
-            <span class="product-details__regular-price">{regularPriceFormatted}&nbsp;€</span>
-          )}
-          {inStock ? (
-            <span class="product-details__stock in-stock">Laos olemas</span>
-          ) : (
-            <span class="product-details__stock out-of-stock">Laost otsas</span>
-          )}
+      <span class="product-details__number">No. 001</span>
+      <p class="eyebrow product-details__eyebrow">Multi-peptiid seerum</p>
+
+      <h2 class="product-details__name">{product.name}</h2>
+
+      <div class="product-details__price-row">
+        <span class="product-details__price">{price}&nbsp;€</span>
+        {isOnSale && (
+          <span class="product-details__regular-price">{regularPriceFormatted}&nbsp;€</span>
+        )}
+        {inStock ? (
+          <span class="product-details__stock in-stock">Laos olemas</span>
+        ) : (
+          <span class="product-details__stock out-of-stock">Laost otsas</span>
+        )}
+      </div>
+
+      <div class="product-details__desc" set:html={product.short_description} />
+
+      <div class="product-details__actions">
+        <div class="qty-control" aria-label="Kogus">
+          <button class="qty-dec" aria-label="Vähenda kogust">−</button>
+          <input
+            type="number"
+            class="qty-input"
+            value="1"
+            min="1"
+            max="99"
+            aria-label="Kogus"
+          />
+          <button class="qty-inc" aria-label="Suurenda kogust">+</button>
         </div>
 
-        <div class="product-details__desc" set:html={product.short_description} />
+        <button
+          class="btn btn--primary add-to-cart-btn"
+          id="add-to-cart-btn"
+          data-product-id={product.id}
+          disabled={!inStock}
+        >
+          {inStock ? 'Lisa ostukorvi' : 'Laost otsas'}
+        </button>
+      </div>
 
-        <div class="product-details__actions">
-          <div class="qty-control" aria-label="Kogus">
-            <button class="qty-dec" aria-label="Vähenda kogust">−</button>
-            <input
-              type="number"
-              class="qty-input"
-              value="1"
-              min="1"
-              max="99"
-              aria-label="Kogus"
-            />
-            <button class="qty-inc" aria-label="Suurenda kogust">+</button>
-          </div>
-
-          <button
-            class="btn btn--primary add-to-cart-btn"
-            id="add-to-cart-btn"
-            data-product-id={product.id}
-            disabled={!inStock}
-          >
-            {inStock ? 'Lisa ostukorvi' : 'Laost otsas'}
-          </button>
+      <div class="product-details__meta">
+        <div class="meta-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+          <span>Nahakaitstud koostis</span>
         </div>
-
-        <div class="product-details__meta">
-          <div class="meta-item">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-            </svg>
-            <span>Nahakaitstud koostis</span>
-          </div>
-          <div class="meta-item">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <circle cx="12" cy="12" r="10"/>
-              <polyline points="12 6 12 12 16 14"/>
-            </svg>
-            <span>Tulemused 4 nädalaga</span>
-          </div>
-          <div class="meta-item">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-            </svg>
-            <span>Julm testitud</span>
-          </div>
+        <div class="meta-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
+          <span>Tulemused 4 nädalaga</span>
+        </div>
+        <div class="meta-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+          </svg>
+          <span>Julm testitud</span>
         </div>
       </div>
     </div>
@@ -96,11 +96,10 @@ const inStock = product.stock_status === 'instock';
 
   gsap.registerPlugin(ScrollTrigger);
 
-  // Animate section on scroll
   gsap.from('.product-details__content > *', {
-    y: 30,
+    y: 24,
     opacity: 0,
-    stagger: 0.1,
+    stagger: 0.09,
     duration: 0.8,
     ease: 'power2.out',
     scrollTrigger: {
@@ -109,7 +108,6 @@ const inStock = product.stock_status === 'instock';
     },
   });
 
-  // Quantity controls
   const btn = document.getElementById('add-to-cart-btn') as HTMLButtonElement;
   const qtyInput = document.querySelector('.qty-input') as HTMLInputElement;
   const qtyDec = document.querySelector('.qty-dec') as HTMLButtonElement;
@@ -131,7 +129,6 @@ const inStock = product.stock_status === 'instock';
     if (val > 99) qtyInput.value = '99';
   });
 
-  // Add to cart
   btn?.addEventListener('click', async () => {
     const productId = parseInt(btn.dataset.productId!);
     const quantity = parseInt(qtyInput.value) || 1;
@@ -157,16 +154,49 @@ const inStock = product.stock_status === 'instock';
 <style lang="scss">
   .product-details {
     background: var(--white);
+    display: flex;
+    align-items: center;
+    padding: 5rem 4rem 5rem 5rem;
+    // Gold vertical rule on left edge
+    border-left: 1px solid rgba(201, 169, 110, 0.35);
+    position: relative;
+
+    @media (max-width: 1280px) {
+      padding: 4rem 2.5rem 4rem 3.5rem;
+    }
+
+    @media (max-width: 1024px) {
+      border-left: none;
+      border-top: 1px solid var(--gray-dark);
+      padding: 3.5rem 2rem;
+    }
 
     &__inner {
-      max-width: 600px;
+      max-width: 420px;
+      width: 100%;
+    }
+
+    &__number {
+      display: block;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      opacity: 0.7;
+      margin-bottom: 0.5rem;
+    }
+
+    &__eyebrow {
+      color: var(--muted);
+      margin-bottom: 0.75rem;
     }
 
     &__name {
-      font-size: clamp(1.75rem, 3vw, 2.75rem);
+      font-family: var(--font-serif);
+      font-size: clamp(1.75rem, 2.5vw, 2.5rem);
       font-weight: 300;
-      margin-bottom: 1.5rem;
       line-height: 1.1;
+      margin-bottom: 1.5rem;
     }
 
     &__price-row {
@@ -174,13 +204,14 @@ const inStock = product.stock_status === 'instock';
       align-items: baseline;
       gap: 1rem;
       flex-wrap: wrap;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.75rem;
     }
 
     &__price {
       font-family: var(--font-serif);
-      font-size: 2rem;
+      font-size: clamp(2.5rem, 4vw, 4rem);
       font-weight: 300;
+      line-height: 1;
       color: var(--black);
     }
 
@@ -191,12 +222,11 @@ const inStock = product.stock_status === 'instock';
     }
 
     &__stock {
-      font-size: 0.65rem;
+      font-size: 0.6rem;
       font-weight: 500;
       letter-spacing: 0.12em;
       text-transform: uppercase;
       padding: 0.3rem 0.75rem;
-      border-radius: 999px;
 
       &.in-stock {
         background: #f0fdf4;
@@ -210,7 +240,7 @@ const inStock = product.stock_status === 'instock';
     }
 
     &__desc {
-      font-size: 0.9rem;
+      font-size: 0.875rem;
       color: var(--muted);
       line-height: 1.8;
       margin-bottom: 2rem;
@@ -229,17 +259,19 @@ const inStock = product.stock_status === 'instock';
     &__meta {
       display: flex;
       flex-direction: column;
-      gap: 0.75rem;
+      gap: 0.6rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--gray-dark);
     }
   }
 
   .meta-item {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    font-size: 0.75rem;
+    gap: 0.6rem;
+    font-size: 0.72rem;
     color: var(--muted);
-    letter-spacing: 0.05em;
+    letter-spacing: 0.03em;
 
     svg {
       color: var(--gold);

@@ -1,0 +1,288 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+<Layout title="Tellimus edastatud | Serum Shop" description="Sinu tellimus on edukalt esitatud">
+  <div class="confirmation-page">
+
+    <header class="checkout-header">
+      <a href="/" class="checkout-logo">Serum Shop</a>
+      <div class="checkout-steps">
+        <span class="step">Tellimus</span>
+        <span class="step-sep">→</span>
+        <span class="step active">Kinnitus</span>
+      </div>
+    </header>
+
+    <main class="confirmation-main">
+      <div class="confirmation-card" id="confirmation-card">
+
+        <div class="confirmation-icon" id="confirmation-icon">
+          <svg class="checkmark" viewBox="0 0 52 52" fill="none">
+            <circle class="checkmark__circle" cx="26" cy="26" r="25" stroke-width="2"/>
+            <path class="checkmark__check" d="M14 27l8 8 16-16" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+
+        <p class="eyebrow confirmation-eyebrow">Täname ostu eest!</p>
+        <h1 class="confirmation-title">Tellimus edastatud</h1>
+        <p class="confirmation-subtitle">
+          Saatsime tellimuse kinnituse e-postile. Palun tee pangaülekanne alljärgnevatele andmetele.
+        </p>
+
+        <div class="order-number-badge">
+          Tellimuse nr. <strong id="order-number">—</strong>
+        </div>
+
+        <div class="bank-instructions">
+          <h3 class="bank-instructions__title">Makse andmed</h3>
+          <div class="bank-grid">
+            <div class="bank-row">
+              <span class="bank-row__label">Saaja</span>
+              <strong class="bank-row__value">Serum Shop OÜ</strong>
+            </div>
+            <div class="bank-row">
+              <span class="bank-row__label">IBAN</span>
+              <strong class="bank-row__value">EE12 3456 7890 1234 5678</strong>
+            </div>
+            <div class="bank-row">
+              <span class="bank-row__label">SWIFT/BIC</span>
+              <strong class="bank-row__value">HABAEE2X</strong>
+            </div>
+            <div class="bank-row">
+              <span class="bank-row__label">Selgitus</span>
+              <strong class="bank-row__value" id="payment-reference">—</strong>
+            </div>
+            <div class="bank-row">
+              <span class="bank-row__label">Summa</span>
+              <strong class="bank-row__value" id="payment-amount">—</strong>
+            </div>
+          </div>
+          <p class="bank-instructions__note">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Tellimus kinnitatakse ja saadetakse pärast makse laekumist (1–2 tööpäeva).
+          </p>
+        </div>
+
+        <a href="/" class="btn btn--outline confirmation-cta">
+          Jätka ostlemist
+        </a>
+      </div>
+    </main>
+
+  </div>
+</Layout>
+
+<script>
+  import { gsap } from 'gsap';
+
+  // Read order details from URL params
+  const params = new URLSearchParams(window.location.search);
+  const orderId  = params.get('id')  ?? '';
+  const orderKey = params.get('key') ?? '';
+  const orderNum = params.get('num') ?? orderId;
+
+  const orderNumberEl    = document.getElementById('order-number')!;
+  const paymentRefEl     = document.getElementById('payment-reference')!;
+
+  orderNumberEl.textContent = `#${orderNum}`;
+  paymentRefEl.textContent  = `Tellimus #${orderNum}`;
+
+  // Animate entrance
+  const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+  tl.from('.confirmation-icon', { scale: 0.5, opacity: 0, duration: 0.7 })
+    .from('.confirmation-eyebrow', { y: 20, opacity: 0, duration: 0.6 }, '-=0.3')
+    .from('.confirmation-title',   { y: 24, opacity: 0, duration: 0.7 }, '-=0.4')
+    .from('.confirmation-subtitle',{ y: 16, opacity: 0, duration: 0.6 }, '-=0.4')
+    .from('.order-number-badge',   { y: 16, opacity: 0, duration: 0.5 }, '-=0.3')
+    .from('.bank-instructions',    { y: 20, opacity: 0, duration: 0.6 }, '-=0.2')
+    .from('.confirmation-cta',     { y: 16, opacity: 0, duration: 0.5 }, '-=0.2');
+
+  // Draw SVG checkmark
+  const circle = document.querySelector('.checkmark__circle') as SVGCircleElement;
+  const check  = document.querySelector('.checkmark__check') as SVGPathElement;
+
+  if (circle && check) {
+    const circleLen = circle.getTotalLength?.() ?? 157;
+    const checkLen  = check.getTotalLength?.()  ?? 38;
+
+    gsap.set(circle, { strokeDasharray: circleLen, strokeDashoffset: circleLen });
+    gsap.set(check,  { strokeDasharray: checkLen,  strokeDashoffset: checkLen });
+
+    gsap.to(circle, { strokeDashoffset: 0, duration: 0.6, ease: 'power2.out', delay: 0.1 });
+    gsap.to(check,  { strokeDashoffset: 0, duration: 0.4, ease: 'power2.out', delay: 0.55 });
+  }
+</script>
+
+<style lang="scss">
+  .confirmation-page {
+    min-height: 100vh;
+    background: var(--white);
+  }
+
+  .checkout-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 2.5rem;
+    border-bottom: 1px solid var(--gray-dark);
+  }
+
+  .checkout-logo {
+    font-family: var(--font-serif);
+    font-size: 1.2rem;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    color: var(--black);
+  }
+
+  .checkout-steps {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .step { color: var(--muted); &.active { color: var(--black); font-weight: 500; } }
+  .step-sep { color: var(--gray-dark); }
+
+  .confirmation-main {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 5rem 2rem;
+  }
+
+  .confirmation-card {
+    max-width: 560px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.5rem;
+  }
+
+  .confirmation-icon {
+    margin-bottom: 0.5rem;
+  }
+
+  .checkmark {
+    width: 64px;
+    height: 64px;
+
+    &__circle {
+      stroke: var(--gold);
+    }
+
+    &__check {
+      stroke: var(--gold);
+    }
+  }
+
+  .confirmation-eyebrow {
+    color: var(--gold);
+    margin-bottom: -0.5rem;
+  }
+
+  .confirmation-title {
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 300;
+    line-height: 1.1;
+  }
+
+  .confirmation-subtitle {
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 420px;
+  }
+
+  .order-number-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.5rem;
+    background: var(--gray);
+    font-size: 0.8rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+
+    strong {
+      color: var(--black);
+      font-weight: 500;
+    }
+  }
+
+  .bank-instructions {
+    width: 100%;
+    border: 1px solid var(--gray-dark);
+    text-align: left;
+    margin-top: 0.5rem;
+
+    &__title {
+      font-family: var(--font-sans);
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--black);
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--gray-dark);
+      background: var(--gray);
+    }
+
+    &__note {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      padding: 0.875rem 1.25rem;
+      border-top: 1px solid var(--gray-dark);
+      font-size: 0.72rem;
+      color: var(--muted);
+      line-height: 1.5;
+      background: var(--gray);
+
+      svg { flex-shrink: 0; color: var(--gold); margin-top: 0.1rem; }
+    }
+  }
+
+  .bank-grid {
+    display: flex;
+    flex-direction: column;
+    padding: 0.25rem 0;
+  }
+
+  .bank-row {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 0.75rem 1.25rem;
+    border-bottom: 1px solid var(--gray);
+
+    &:last-child { border-bottom: none; }
+
+    &__label {
+      font-size: 0.72rem;
+      color: var(--muted);
+      min-width: 5rem;
+      flex-shrink: 0;
+      letter-spacing: 0.02em;
+    }
+
+    &__value {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--black);
+      word-break: break-all;
+    }
+  }
+
+  .confirmation-cta {
+    margin-top: 0.5rem;
+    padding: 0.9rem 2.5rem;
+  }
+</style>

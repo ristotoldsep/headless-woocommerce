@@ -28,7 +28,7 @@
         <span id="cart-total-display">0,00&nbsp;€</span>
       </div>
       <p class="cart-shipping-note">Tasuta kohaletoimetamine üle 50&nbsp;€</p>
-      <a class="btn btn--primary" id="checkout-btn" href="#">
+      <a class="btn btn--primary" id="checkout-btn" href="/checkout">
         Mine kassasse
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <line x1="5" y1="12" x2="19" y2="12"/>
@@ -46,9 +46,8 @@
 <script>
   import { gsap } from 'gsap';
   import { cartItems, cartOpen, cartTotal, cartCount, cartToken } from '../lib/stores';
-  import { updateCartItem, removeCartItem, getCheckoutUrl } from '../lib/cart';
+  import { updateCartItem, removeCartItem } from '../lib/cart';
 
-  const WC_URL = import.meta.env.PUBLIC_WC_URL;
   const sidebar = document.getElementById('cart-sidebar')!;
   const panel = sidebar.querySelector('.cart-sidebar__panel')!;
   const itemsList = document.getElementById('cart-items-list')!;
@@ -135,10 +134,7 @@
     totalDisplay.textContent = `${formatted}\u00a0€`;
   });
 
-  // Checkout URL
-  cartToken.subscribe(() => {
-    checkoutBtn.href = getCheckoutUrl();
-  });
+  // Checkout link is static /checkout — Astro handles it natively
 </script>
 
 <style lang="scss">
