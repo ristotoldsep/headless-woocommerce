@@ -1,35 +1,39 @@
 ---
 ---
 <section class="testimonials" id="testimonials">
-  <div class="testimonials__inner">
+
+  <div class="testimonials__label">
     <p class="eyebrow testimonials__eyebrow">Klientide kogemused</p>
-
-    <div class="testimonials__grid">
-
-      <figure class="testimonial">
-        <blockquote class="testimonial__quote">
-          <span class="testimonial__guillemet" aria-hidden="true">„</span>
-          Kasutasin 6 nädalat ja tulemused olid vapustavad. Ripsmed muutusid märgatavalt pikemaks ja tihedamaks — esimest korda elus ei pea ma ripsmete maskara järele haarama.
-        </blockquote>
-        <figcaption class="testimonial__author">
-          <span class="testimonial__name">Kristiina M.</span>
-          <span class="testimonial__stars" aria-label="5 tähte">★★★★★</span>
-        </figcaption>
-      </figure>
-
-      <figure class="testimonial">
-        <blockquote class="testimonial__quote">
-          <span class="testimonial__guillemet" aria-hidden="true">„</span>
-          Olin skeptiline, aga pärast 4 nädalat on erinevus päriselt näha. Kulmud on täidlasemad ja ripsmejuur tugevam. Kindlasti ostan uuesti.
-        </blockquote>
-        <figcaption class="testimonial__author">
-          <span class="testimonial__name">Liis T.</span>
-          <span class="testimonial__stars" aria-label="5 tähte">★★★★★</span>
-        </figcaption>
-      </figure>
-
-    </div>
   </div>
+
+  <div class="testimonials__grid">
+
+    <figure class="testimonial testimonial--a">
+      <div class="testimonial__mark" aria-hidden="true">„</div>
+      <blockquote class="testimonial__quote">
+        Kasutasin 6 nädalat ja tulemused olid vapustavad. Ripsmed muutusid märgatavalt pikemaks ja tihedamaks — esimest korda elus ei pea ma ripsmete maskara järele haarama.
+      </blockquote>
+      <figcaption class="testimonial__author">
+        <span class="testimonial__name">Kristiina M.</span>
+        <span class="testimonial__stars" aria-label="5 tähte">★★★★★</span>
+      </figcaption>
+    </figure>
+
+    <div class="testimonials__divider" aria-hidden="true"></div>
+
+    <figure class="testimonial testimonial--b">
+      <div class="testimonial__mark" aria-hidden="true">„</div>
+      <blockquote class="testimonial__quote">
+        Olin skeptiline, aga pärast 4 nädalat on erinevus päriselt näha. Kulmud on täidlasemad ja ripsmejuur tugevam. Kindlasti ostan uuesti.
+      </blockquote>
+      <figcaption class="testimonial__author">
+        <span class="testimonial__name">Liis T.</span>
+        <span class="testimonial__stars" aria-label="5 tähte">★★★★★</span>
+      </figcaption>
+    </figure>
+
+  </div>
+
 </section>
 
 <script>
@@ -38,14 +42,31 @@
 
   gsap.registerPlugin(ScrollTrigger);
 
+  gsap.from('.testimonials__label', {
+    opacity: 0, y: 20, duration: 0.8, ease: 'power2.out',
+    scrollTrigger: { trigger: '.testimonials', start: 'top 80%' },
+  });
+
   gsap.from('.testimonial', {
-    y: 28,
+    y: 40,
     opacity: 0,
-    duration: 0.9,
+    duration: 1.1,
     stagger: 0.2,
     ease: 'power3.out',
     scrollTrigger: {
-      trigger: '.testimonials',
+      trigger: '.testimonials__grid',
+      start: 'top 75%',
+    },
+  });
+
+  gsap.from('.testimonial__mark', {
+    scale: 0.7,
+    opacity: 0,
+    duration: 0.9,
+    stagger: 0.2,
+    ease: 'back.out(1.4)',
+    scrollTrigger: {
+      trigger: '.testimonials__grid',
       start: 'top 75%',
     },
   });
@@ -53,37 +74,59 @@
 
 <style lang="scss">
   .testimonials {
-    padding: 5rem 2rem;
+    background: var(--cream);
+    padding: 6rem 0 5rem;
+    border-top: 1px solid var(--gray-dark);
+    border-bottom: 1px solid var(--gray-dark);
   }
 
-  .testimonials__inner {
-    max-width: 900px;
-    margin: 0 auto 0 8%;
-    background: var(--gray);
-    padding: 4rem;
+  .testimonials__label {
+    padding: 0 6rem 3.5rem;
 
-    @media (max-width: 1200px) {
-      margin: 0 auto;
+    @media (max-width: 1024px) {
+      padding: 0 3rem 3rem;
     }
 
     @media (max-width: 640px) {
-      padding: 2.5rem 1.75rem;
+      padding: 0 1.75rem 2.5rem;
     }
   }
 
   .testimonials__eyebrow {
     color: var(--gold);
-    margin-bottom: 2.5rem;
   }
 
   .testimonials__grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: start;
+    padding: 0 6rem;
+    gap: 0;
 
-    @media (max-width: 640px) {
+    @media (max-width: 1024px) {
+      padding: 0 3rem;
+    }
+
+    @media (max-width: 768px) {
       grid-template-columns: 1fr;
-      gap: 2.5rem;
+      padding: 0 1.75rem;
+      gap: 3.5rem;
+    }
+  }
+
+  .testimonials__divider {
+    width: 1px;
+    background: var(--gray-dark);
+    align-self: stretch;
+    margin: 0 4rem;
+    flex-shrink: 0;
+
+    @media (max-width: 1024px) {
+      margin: 0 2.5rem;
+    }
+
+    @media (max-width: 768px) {
+      display: none;
     }
   }
 
@@ -91,46 +134,49 @@
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
+    gap: 1.5rem;
+    position: relative;
+
+    &__mark {
+      font-family: var(--font-serif);
+      font-size: 5rem;
+      line-height: 0.6;
+      color: var(--gold);
+      opacity: 0.35;
+      display: block;
+      height: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
 
     &__quote {
       font-family: var(--font-serif);
-      font-size: clamp(1.05rem, 1.5vw, 1.2rem);
+      font-size: clamp(1.1rem, 1.7vw, 1.35rem);
       font-style: italic;
       font-weight: 300;
-      line-height: 1.65;
+      line-height: 1.7;
       color: var(--black);
-      position: relative;
-    }
-
-    &__guillemet {
-      font-family: var(--font-serif);
-      font-size: 3.5rem;
-      line-height: 0.5;
-      color: var(--gold);
-      opacity: 0.5;
-      display: inline-block;
-      vertical-align: -0.5rem;
-      margin-right: 0.15rem;
     }
 
     &__author {
       display: flex;
-      flex-direction: column;
-      gap: 0.3rem;
+      align-items: center;
+      gap: 1rem;
+      padding-top: 0.5rem;
+      border-top: 1px solid var(--gray-dark);
     }
 
     &__name {
-      font-size: 0.72rem;
-      letter-spacing: 0.1em;
+      font-size: 0.67rem;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--muted);
     }
 
     &__stars {
       color: var(--gold);
-      font-size: 0.75rem;
-      letter-spacing: 0.15em;
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      margin-left: auto;
     }
   }
 </style>

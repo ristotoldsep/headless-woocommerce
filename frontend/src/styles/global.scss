@@ -4,13 +4,15 @@
    Design Tokens (CSS Custom Properties)
    ========================================================= */
 :root {
-  --black:       #0a0a0a;
-  --white:       #ffffff;
-  --gold:        #c9a96e;
-  --gold-light:  #e8d5b0;
-  --muted:       #6b6b6b;
-  --gray:        #f5f5f3;
-  --gray-dark:   #e8e8e6;
+  --black:       #0d0d0b;
+  --white:       #faf9f7;
+  --gold:        #b8935a;
+  --gold-light:  #dfc99a;
+  --gold-pale:   rgba(184, 147, 90, 0.12);
+  --muted:       #6b6860;
+  --gray:        #f2f1ef;
+  --gray-dark:   #e4e3e0;
+  --cream:       #f7f5f0;
 
   --font-serif:  'Cormorant Garamond', Georgia, serif;
   --font-sans:   'Inter', system-ui, -apple-system, sans-serif;

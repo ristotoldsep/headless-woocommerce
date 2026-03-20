@@ -176,7 +176,7 @@ import Layout from '../layouts/Layout.astro';
 
 <script>
   import { cartItems, cartTotal, cartCount } from '../lib/stores';
-  import { placeOrder } from '../lib/cart';
+  import { placeOrder, fetchCart } from '../lib/cart';
   import type { CheckoutData } from '../lib/cart';
 
   // ── Render order summary ──────────────────────────────────────────────────
@@ -185,7 +185,23 @@ import Layout from '../layouts/Layout.astro';
   const summarySubtotalEl = document.getElementById('summary-subtotal')!;
   const summaryTotalEl = document.getElementById('summary-total')!;
 
+  // Show loading state while we re-hydrate the cart from the persisted Cart-Token
+  summaryItemsEl.innerHTML = '<p class="summary-loading">Laen ostukorvi…</p>';
+  let cartReady = false;
+
+  // cartItems is a plain atom (resets on page load), so we must re-fetch
+  // using the Cart-Token that was persisted in localStorage by the main page.
+  fetchCart().catch(() => {}).finally(() => {
+    cartReady = true;
+    // If still empty after fetch, show the empty state
+    if (cartItems.get().length === 0) {
+      summaryItemsEl.innerHTML = '<p class="summary-empty">Ostukorv on tühi</p>';
+      summaryTotalsEl.style.display = 'none';
+    }
+  });
+
   cartItems.subscribe((items) => {
+    if (!cartReady && items.length === 0) return; // still loading, don't flash empty
     if (items.length === 0) {
       summaryItemsEl.innerHTML = '<p class="summary-empty">Ostukorv on tühi</p>';
       summaryTotalsEl.style.display = 'none';
@@ -392,6 +408,13 @@ import Layout from '../layouts/Layout.astro';
     font-size: 0.85rem;
     color: var(--muted);
     font-style: italic;
+  }
+
+  .summary-loading {
+    font-size: 0.85rem;
+    color: var(--muted);
+    font-style: italic;
+    opacity: 0.6;
   }
 
   .summary-item {

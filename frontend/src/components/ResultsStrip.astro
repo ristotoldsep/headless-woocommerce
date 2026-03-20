@@ -1,21 +1,31 @@
 ---
 ---
 <section class="results-strip" id="results">
-  <div class="results-strip__inner">
+  <div class="results-strip__track">
+
     <div class="results-metric">
-      <span class="results-metric__number">400%</span>
-      <span class="results-metric__label">niisutuse tõus</span>
+      <span class="results-metric__number">400<span class="results-metric__unit">%</span></span>
+      <span class="results-metric__label">niisutuse<br />tõus</span>
     </div>
-    <div class="results-divider" aria-hidden="true"></div>
+
+    <div class="results-sep" aria-hidden="true"></div>
+
     <div class="results-metric">
-      <span class="results-metric__number">4</span>
-      <span class="results-metric__label">nädalat — esimesed<br />tulemused</span>
+      <span class="results-metric__number">4<span class="results-metric__unit">nä</span></span>
+      <span class="results-metric__label">esimesed<br />tulemused</span>
     </div>
-    <div class="results-divider" aria-hidden="true"></div>
+
+    <div class="results-sep" aria-hidden="true"></div>
+
     <div class="results-metric">
       <span class="results-metric__number">0</span>
       <span class="results-metric__label">julmaid<br />katseid</span>
     </div>
+
+    <div class="results-strip__aside">
+      <p class="results-strip__tagline">Tõestatud toimega.<br /><em>Looduslikult.</em></p>
+    </div>
+
   </div>
 </section>
 
@@ -26,82 +36,144 @@
   gsap.registerPlugin(ScrollTrigger);
 
   gsap.from('.results-metric', {
-    y: 30,
+    y: 40,
     opacity: 0,
-    duration: 0.8,
-    stagger: 0.15,
+    duration: 0.9,
+    stagger: 0.12,
     ease: 'power3.out',
     scrollTrigger: {
       trigger: '.results-strip',
       start: 'top 80%',
     },
   });
+
+  gsap.from('.results-strip__aside', {
+    opacity: 0,
+    x: 20,
+    duration: 1.0,
+    ease: 'power2.out',
+    scrollTrigger: {
+      trigger: '.results-strip',
+      start: 'top 75%',
+    },
+  });
 </script>
 
 <style lang="scss">
   .results-strip {
-    padding: 5rem 2rem;
+    background: var(--black);
+    color: var(--white);
+    padding: 5rem 0;
+    overflow: hidden;
   }
 
-  .results-strip__inner {
-    max-width: 900px;
-    margin: 0 auto;
+  .results-strip__track {
     display: flex;
-    align-items: flex-start;
-    justify-content: center;
+    align-items: center;
+    padding: 0 6rem;
     gap: 0;
+
+    @media (max-width: 1024px) {
+      padding: 0 3rem;
+    }
+
+    @media (max-width: 640px) {
+      flex-direction: column;
+      padding: 0 2rem;
+      gap: 3rem;
+      align-items: flex-start;
+    }
   }
 
   .results-metric {
-    flex: 1;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 0 2rem;
+    gap: 0.75rem;
+    padding: 0 4rem 0 0;
+
+    @media (max-width: 1024px) {
+      padding: 0 2.5rem 0 0;
+    }
+
+    @media (max-width: 640px) {
+      padding: 0;
+    }
 
     &__number {
       font-family: var(--font-serif);
-      font-size: clamp(3.5rem, 7vw, 5.5rem);
+      font-size: clamp(4rem, 7vw, 6.5rem);
       font-weight: 300;
-      line-height: 1;
-      color: var(--black);
+      line-height: 0.9;
+      color: var(--white);
+      letter-spacing: -0.03em;
       display: block;
-      margin-bottom: 0.75rem;
+    }
+
+    &__unit {
+      font-size: 0.45em;
+      letter-spacing: 0.05em;
+      color: var(--gold);
+      vertical-align: super;
+      margin-left: 0.1em;
     }
 
     &__label {
-      font-size: 0.68rem;
-      letter-spacing: 0.12em;
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: var(--muted);
-      line-height: 1.6;
+      color: rgba(255,255,255,0.4);
+      line-height: 1.7;
     }
   }
 
-  .results-divider {
+  .results-sep {
     width: 1px;
-    height: 3.5rem;
-    background: var(--gray-dark);
+    height: 4rem;
+    background: rgba(255,255,255,0.1);
     flex-shrink: 0;
-    align-self: center;
-    margin-top: -1rem;
+    margin-right: 4rem;
+
+    @media (max-width: 1024px) {
+      margin-right: 2.5rem;
+    }
+
+    @media (max-width: 640px) {
+      width: 2rem;
+      height: 1px;
+      margin-right: 0;
+    }
   }
 
-  @media (max-width: 640px) {
-    .results-strip__inner {
-      flex-direction: column;
-      align-items: center;
-      gap: 2.5rem;
+  .results-strip__aside {
+    margin-left: auto;
+    border-left: 1px solid rgba(255,255,255,0.1);
+    padding-left: 4rem;
+
+    @media (max-width: 1024px) {
+      padding-left: 2.5rem;
     }
 
-    .results-divider {
-      width: 3rem;
-      height: 1px;
+    @media (max-width: 640px) {
+      border-left: none;
+      padding-left: 0;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 2rem;
+      width: 100%;
+      margin-left: 0;
     }
+  }
 
-    .results-metric {
-      padding: 0;
+  .results-strip__tagline {
+    font-family: var(--font-serif);
+    font-size: clamp(1.25rem, 2vw, 1.75rem);
+    font-weight: 300;
+    line-height: 1.4;
+    color: rgba(255,255,255,0.7);
+    max-width: 14rem;
+
+    em {
+      font-style: italic;
+      color: var(--gold);
     }
   }
 </style>

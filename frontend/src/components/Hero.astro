@@ -14,6 +14,7 @@ const { imageSrc, imageAlt } = Astro.props;
 
       <div class="hero__copy">
         <p class="eyebrow hero__eyebrow">Eesti käsitöö seerum</p>
+        <div class="hero__rule" aria-hidden="true"></div>
         <h1 class="hero__title">
           Ripsmed<br /><em>&amp; kulmud</em>
         </h1>
@@ -74,7 +75,7 @@ const { imageSrc, imageAlt } = Astro.props;
 
   .hero__text-col {
     position: relative;
-    background: var(--white);
+    background: var(--cream);
     display: flex;
     align-items: stretch;
 
@@ -87,7 +88,7 @@ const { imageSrc, imageAlt } = Astro.props;
       right: 0;
       width: 1px;
       background: var(--gold);
-      opacity: 0.4;
+      opacity: 0.5;
     }
 
     @media (max-width: 768px) {
@@ -144,29 +145,38 @@ const { imageSrc, imageAlt } = Astro.props;
 
   .hero__eyebrow {
     color: var(--gold);
-    margin-bottom: 1.25rem;
+    margin-bottom: 1rem;
 
     @media (max-width: 768px) {
       margin-bottom: 0.75rem;
     }
   }
 
+  .hero__rule {
+    width: 2.5rem;
+    height: 1px;
+    background: var(--gold);
+    opacity: 0.6;
+    margin-bottom: 1.5rem;
+  }
+
   .hero__title {
     font-family: var(--font-serif);
-    font-size: clamp(3.5rem, 6.5vw, 6rem);
+    font-size: clamp(4rem, 7.5vw, 7.5rem);
     font-weight: 300;
-    line-height: 0.92;
-    letter-spacing: -0.01em;
+    line-height: 0.88;
+    letter-spacing: -0.02em;
     color: var(--black);
     margin-bottom: 1.75rem;
 
     em {
       font-style: italic;
       color: var(--gold);
+      display: block;
     }
 
     @media (max-width: 768px) {
-      font-size: clamp(3rem, 10vw, 4.5rem);
+      font-size: clamp(3.5rem, 12vw, 5.5rem);
       margin-bottom: 1.25rem;
     }
   }
